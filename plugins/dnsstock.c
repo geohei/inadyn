@@ -1,6 +1,7 @@
 /* Plugin for DNS Stock
  *
  * Copyright (C) 2016  Georges Heinesch <georges@geohei.lu>
+ * Copyright (C) 2010-2014  Joachim Nilsson <troglobit@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,8 +22,8 @@
 
 #include "plugin.h"
 
-/* is.dhis.org specific update request format */
-#define DHIS_UPDATE_IP_REQUEST						\
+/* dns-stock.com specific update request format */
+#define DNSSTOCK_UPDATE_IP_REQUEST						\
 	"GET %s"							\
 	"hostname=%s&"							\
 	"password=%s&"							\
@@ -36,7 +37,7 @@ static int request  (ddns_t       *ctx,   ddns_info_t *info, ddns_alias_t *alias
 static int response (http_trans_t *trans, ddns_info_t *info, ddns_alias_t *alias);
 
 static ddns_system_t plugin = {
-	.name         = "default@dhis.org",
+	.name         = "default@dnsstock.com",
 
 	.request      = (req_fn_t)request,
 	.response     = (rsp_fn_t)response,
@@ -51,7 +52,7 @@ static ddns_system_t plugin = {
 static int request(ddns_t *ctx, ddns_info_t *info, ddns_alias_t *alias)
 {
 	return snprintf(ctx->request_buf, ctx->request_buflen,
-			DHIS_UPDATE_IP_REQUEST,
+			DNSSTOCK_UPDATE_IP_REQUEST,
 			info->server_url,
 			alias->name,
 			info->creds.password,
