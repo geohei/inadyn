@@ -23,7 +23,7 @@
 #include "plugin.h"
 
 /* dns-stock.com specific update request format */
-#define DNSSTOCK_UPDATE_IP_REQUEST						\
+#define DNSSTOCK_UPDATE_IP_REQUEST					\
 	"GET %s"							\
 	"hostname=%s&"							\
 	"password=%s&"							\
@@ -33,10 +33,10 @@
 	"Host: %s\r\n"							\
 	"User-Agent: " AGENT_NAME " " SUPPORT_ADDR "\r\n\r\n"
 
-static int request  (ddns_t       *ctx,   ddns_info_t *info, ddns_alias_t *alias);
-static int response (http_trans_t *trans, ddns_info_t *info, ddns_alias_t *alias);
+static int request  (dnsstock_t *ctx, dnsstock_info_t *info, dnsstock_alias_t *alias);
+static int response (http_trans_t *trans, dnsstock_info_t *info, dnsstock_alias_t *alias);
 
-static ddns_system_t plugin = {
+static dnsstock_system_t plugin = {
 	.name         = "default@dnsstock.com",
 
 	.request      = (req_fn_t)request,
@@ -45,11 +45,11 @@ static ddns_system_t plugin = {
 	.checkip_name = DYNDNS_MY_IP_SERVER,
 	.checkip_url  = DYNDNS_MY_CHECKIP_URL,
 
-	.server_name  = "is.dhis.org",
+	.server_name  = "www.dns-stock.com",
 	.server_url   =  "/?"
 };
 
-static int request(ddns_t *ctx, ddns_info_t *info, ddns_alias_t *alias)
+static int request(dnsstock_t *ctx, dnsstock_info_t *info, dnsstock_alias_t *alias)
 {
 	return snprintf(ctx->request_buf, ctx->request_buflen,
 			DNSSTOCK_UPDATE_IP_REQUEST,
@@ -60,7 +60,7 @@ static int request(ddns_t *ctx, ddns_info_t *info, ddns_alias_t *alias)
 			info->server_name.name);
 }
 
-static int response(http_trans_t *trans, ddns_info_t *UNUSED(info), ddns_alias_t *alias)
+static int response(http_trans_t *trans, dnsstock_info_t *UNUSED(info), dnsstock_alias_t *alias)
 {
 	char *rsp = trans->p_rsp_body;
 
@@ -77,9 +77,9 @@ PLUGIN_INIT(plugin_init)
 	plugin_register(&plugin);
 }
 
-PLUGIN_EXIT(plugin_exit)
+PLUGIN_EXIT(dnsstock_exit)
 {
-	plugin_unregister(&plugin);
+	dnsstock_unregister(&plugin);
 }
 
 /**
