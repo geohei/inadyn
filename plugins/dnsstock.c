@@ -33,7 +33,7 @@
 	"Host: %s\r\n"							\
 	"User-Agent: " AGENT_NAME " " SUPPORT_ADDR "\r\n\r\n"
 
-static int request  (dnsstock_t *ctx, dnsstock_info_t *info, dnsstock_alias_t *alias);
+static int request  (dnsstock_t   *ctx,   dnsstock_info_t *info, dnsstock_alias_t *alias);
 static int response (http_trans_t *trans, dnsstock_info_t *info, dnsstock_alias_t *alias);
 
 static dnsstock_system_t plugin = {
